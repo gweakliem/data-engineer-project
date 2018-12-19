@@ -29,6 +29,21 @@ The designed data model must expose the following information:
     * revenue by genre by year
     * profit by genre by year
 
+# Setup
+
+The file `import_movies.py` creates SQL import scripts given an input file. 
+
+A smaller sample datafile is provided in the `data/` subdir. This doesn't include many of the corner cases in embedded 
+JSON parsing from the larger dataset. At this moment, you'll have to modify `import_movies.py` manually to use the sample 
+file if you want to test on the small dataset.
+
+To download the larger dataset, use this command: 
+
+```bash
+curl -O  https://s3-us-west-2.amazonaws.com/com.guild.us-west-2.public-data/project-data/the-movies-dataset.zip && \
+unzip the-movies-dataset.zip -d data
+```
+
 # Deliverables
 
 Fork this repository and complete all relevant tasks in that forked repository
