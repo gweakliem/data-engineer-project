@@ -31,7 +31,8 @@ The designed data model must expose the following information:
 
 # Setup
 
-The file `import_movies.py` creates SQL import scripts given an input file. 
+The file `import_movies.py` creates SQL import scripts given an input file that can be used to hydrate the general data 
+model. 
 
 A smaller sample datafile is provided in the `data/` subdir. This doesn't include many of the corner cases in embedded 
 JSON parsing from the larger dataset. At this moment, you'll have to modify `import_movies.py` manually to use the sample 

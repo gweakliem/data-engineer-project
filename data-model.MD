@@ -50,7 +50,7 @@ Project into an array of companies containing annualization of the metrics:
         }      
     },
     {
-        "name": "Universal": 
+        "name": "Universal", 
         "id": "38383",
         "annualRecords": {
         }
@@ -89,7 +89,7 @@ Project into annualization (partition by year) of companies listing metrics
         }
     ],
     "2017": [ {
-            "name": "Universal": 
+            "name": "Universal",
             "id": "38383",
             "budget": 1234,
             "revenue": 43212,
@@ -120,7 +120,7 @@ Partitioned annually.
   "2018": {
     "populararity": { "genre": "action", "id":  "123", "avgPopularity": 79.08},
     "budget": [{ "genre": "comedy", "id":  "456" , "budget": 432234}, { "genre": "action", "id":  "456" , "budget": 84345}],
-    "revenue": [{ "genre": "family", "id":  "789", "revenue": 547834}, "genre": "comedy", "id":  "456" , "revenue": 943234],
+    "revenue": [{ "genre": "family", "id":  "789", "revenue": 547834}, {"genre": "comedy", "id":  "456" , "revenue": 943234}],
     "profit": [{ "genre": "action", "id":  "123", "profit": 99443 },{ "genre": "comedy", "id":  "123", "profit": 199443 }]
   },
   "2017": {
@@ -137,8 +137,7 @@ Alternatively, broken out by category
 ```json
 {
      "annualProfit": {
-        "2018": [{"genre": "action"
-                     "id": 123, "annualProfit": 12345432}],
+        "2018": [{"genre": "action", "id": 123, "annualProfit": 12345432}],
         "2017": [{}],
         "2016": [{}]
     },

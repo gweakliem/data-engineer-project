@@ -14,6 +14,7 @@ def parse_lousy_json(str, key):
             return ast.literal_eval(str)
     except SyntaxError:
         print("Bad JSON encountered in {}: {}",key, str, file=sys.stderr)
+        return None
 
 movies = []
 genres = {}
@@ -27,25 +28,24 @@ with open('./data/movies_metadata.csv') as csvfile:
         columns = ['id','revenue','title','status','release_date','popularity','budget']
         for col in columns:
             movie[col] = row[col]
-        if movie['release_date'] is not None:
-            movie['release_year'] = movie['release_date'][0:4]
-        else:
-            print("No release date indicated for movie " + movie['id'], file=sys.stderr)
-            # we can't really key without a release date / year, so pass on this movie
-            continue
         mg = parse_lousy_json(row['genres'],row['id'])
-        if mg is not None:
+        if mg:
             genres.update(dict((x['id'], x['name']) for x in mg))
             movie_genres.extend([(movie['id'],m['id']) for m in mg])
 
-        mp = parse_lousy_json(row['genres'],row['id'])
-        if mp is not None:
+        mp = parse_lousy_json(row['production_companies'],row['id'])
+        if mp:
             production_companies.update(dict((x['id'], x['name']) for x in mp))
-            movie_pcs.extend([(movie['id'],m['id']) for m in mp])
-        movies.append(movie)
-    r = None
+            movie_pcs.extend([(movie['id'],x['id']) for x in mp])
 
-# now we have a trimmed down dataset
+        if movie['release_date'] is not None:
+            movie['release_year'] = movie['release_date'][0:4]
+            movies.append(movie)
+        else:
+            print("No release date indicated for movie " + movie['id'], file=sys.stderr)
+            # we can't really key without a release date / year, so pass on this movie
+
+# now we have a trimmed down dataset, output the INSERTs to recreate as RDBMS
 
 # TODO: lazy string escaping, fix
 for m in movies:
@@ -57,8 +57,8 @@ for id,name in genres.items():
 for id, name in production_companies.items():
    print(f"INSERT INTO production_companies (id,name) VALUES ({id},'{name}')")
 
-for id, name in movie_genres:
-    print(f"INSERT INTO movie_genres (id,name) VALUES ({id},'{name}')")
+for movie_id, genre_id in movie_genres:
+    print(f"INSERT INTO movie_genres (movie_id,genre_id) VALUES ({movie_id},{genre_id})")
 
-for id, name in movie_pcs:
-    print(f"INSERT INTO movie_production_companies (id,name) VALUES ({id},'{name}')")
+for movie_id, pc_id in movie_pcs:
+    print(f"INSERT INTO movie_production_companies (movie_id,pc_id) VALUES ({movie_id},{pc_id})")
